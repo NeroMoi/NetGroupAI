@@ -1,0 +1,13 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{C53ABB9B-429D-210E-D49E-1691BFF872DF}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "NetGroupAI",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
