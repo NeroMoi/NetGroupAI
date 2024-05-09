@@ -8,7 +8,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "ObserverPlayer.generated.h"
 
-UCLASS()
+UCLASS(Blueprintable)
 class NETGROUPAI_API AObserverPlayer : public AActor
 {
 	GENERATED_BODY()
@@ -23,6 +23,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 		UStaticMeshComponent* SM_Shape;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Test ObjectInstance")
+		float value;
 
 
 protected:

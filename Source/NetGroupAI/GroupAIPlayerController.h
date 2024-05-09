@@ -26,6 +26,7 @@ public:
 	//void CreatePlayerCharacter();
 
 	//服务器上运行，生成玩家角色
+	UFUNCTION(BlueprintCallable)
 	void CreatePlayerCharacter_Implementation();
 
 //	void print();

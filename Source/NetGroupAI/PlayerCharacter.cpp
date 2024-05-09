@@ -60,8 +60,13 @@ APlayerCharacter::APlayerCharacter()
 	playerMovement->UpdatedComponent = RootComponent;
 	playerMovement->SetIsReplicated(true);
 
-
+	//默认隐藏鼠标
 	bHideMouse = true;
+
+	//指向的是原生类默认对象
+	TestInstanceObj = CreateDefaultSubobject<UTestInstanceObject>(TEXT("Test object"));
+	TestInstanceObj->testValue = 55.0f; 
+	TestInstanceObj->Myowner = this;
 
 }
 
@@ -288,7 +293,7 @@ void APlayerCharacter::TeleportOut()
 							//actor的一半高度->避免陷入地面
 							
 							FVector Destination = FVector(0.0f, 0.0f, SM_sphere->GetCollisionShape().Box.HalfExtentY);
-							GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("height:%f"), SM_sphere->GetCollisionShape().Box.HalfExtentY));
+						//	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("height:%f"), SM_sphere->GetCollisionShape().Box.HalfExtentY));
 							Teleport(HitResult.Location+ Destination);
 							SetActorLocation(HitResult.Location+ Destination);
 

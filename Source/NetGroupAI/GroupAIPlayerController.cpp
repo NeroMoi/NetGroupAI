@@ -30,14 +30,20 @@ void AGroupAIPlayerController::CreatePlayerCharacter_Implementation()
 				FString BaseName;
 				BasePlayerType->GetName(BaseName);
 			//	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, BaseName);
-				//服务器上的每一个控制器对应生成一个玩家角色
+				//服务器上的客户端对应的每一个控制器对应生成一个玩家角色
 				if (!this->IsLocalController())
 				{
 					//		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, GetWorld()->GetMapName());
 					APlayerCharacter* PlayertInstance = GetWorld()->SpawnActor<APlayerCharacter>(BasePlayerType,GM->playerStart->GenerateStartLocation(), FRotator::ZeroRotator);
-
+			
 					if (PlayertInstance)
 					{
+						// 搭配蓝图部分测试，实例化的属性，在蓝图实例化对象时，属性是拷贝的蓝图CDO，因此在创建指针成员时尤其需要注意
+						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, PlayertInstance->GetFName().ToString());
+						auto temp = Cast<APlayerCharacter>(PlayertInstance->TestInstanceObj->Myowner);
+						if (temp)
+							GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, temp->GetFName().ToString());
+						
 						
 						PlayertInstance->SetOwner(this);
 						this->Possess(PlayertInstance);
@@ -61,6 +67,13 @@ void AGroupAIPlayerController::CreatePlayerCharacter_Implementation()
 
 					if (PlayertInstance)
 					{
+
+						  // 搭配蓝图部分测试，实例化的属性，在蓝图实例化对象时，属性是拷贝的蓝图CDO，因此在创建指针成员时尤其需要注意
+						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, PlayertInstance->GetFName().ToString());
+						auto temp = Cast<APlayerCharacter>(PlayertInstance->TestInstanceObj->Myowner);
+						if (temp)
+							GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, temp->GetFName().ToString());
+						
 
 						PlayertInstance->SetOwner(this);
 						this->Possess(PlayertInstance);
