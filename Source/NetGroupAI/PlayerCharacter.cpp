@@ -64,9 +64,9 @@ APlayerCharacter::APlayerCharacter()
 	bHideMouse = true;
 
 	//指向的是原生类默认对象
-	TestInstanceObj = CreateDefaultSubobject<UTestInstanceObject>(TEXT("Test object"));
+	/*TestInstanceObj = CreateDefaultSubobject<UTestInstanceObject>(TEXT("Test object"));
 	TestInstanceObj->testValue = 55.0f; 
-	TestInstanceObj->Myowner = this;
+	TestInstanceObj->Myowner = this;*/
 
 }
 

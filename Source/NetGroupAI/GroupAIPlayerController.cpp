@@ -3,17 +3,29 @@
 
 #include "GroupAIPlayerController.h"
 #include "ObserverPlayer.h"
+#include "ObserverPlayerHUD.h"
 #include"Engine/Engine.h"
 
 void AGroupAIPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	//本地生成HUD
+	InitializeHUD();
+	//服务器生成角色
 	CreatePlayerCharacter_Implementation();
+	//开启鼠标overlap事件
+	//用于执行，鼠标指向actor，actor做出响应
+	this->bEnableMouseOverEvents = true;
+
+	
 }
 
 void AGroupAIPlayerController::CreatePlayerCharacter_Implementation()
 {
 	
+	
+
+
 	//服务器上才能生成角色
 	if (GetLocalRole() == ROLE_Authority)
 	{
@@ -39,11 +51,11 @@ void AGroupAIPlayerController::CreatePlayerCharacter_Implementation()
 					if (PlayertInstance)
 					{
 						// 搭配蓝图部分测试，实例化的属性，在蓝图实例化对象时，属性是拷贝的蓝图CDO，因此在创建指针成员时尤其需要注意
-						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, PlayertInstance->GetFName().ToString());
+					/*	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, PlayertInstance->GetFName().ToString());
 						auto temp = Cast<APlayerCharacter>(PlayertInstance->TestInstanceObj->Myowner);
 						if (temp)
 							GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, temp->GetFName().ToString());
-						
+						*/
 						
 						PlayertInstance->SetOwner(this);
 						this->Possess(PlayertInstance);
@@ -69,11 +81,11 @@ void AGroupAIPlayerController::CreatePlayerCharacter_Implementation()
 					{
 
 						  // 搭配蓝图部分测试，实例化的属性，在蓝图实例化对象时，属性是拷贝的蓝图CDO，因此在创建指针成员时尤其需要注意
-						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, PlayertInstance->GetFName().ToString());
+					/*	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, PlayertInstance->GetFName().ToString());
 						auto temp = Cast<APlayerCharacter>(PlayertInstance->TestInstanceObj->Myowner);
 						if (temp)
 							GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, temp->GetFName().ToString());
-						
+						*/
 
 						PlayertInstance->SetOwner(this);
 						this->Possess(PlayertInstance);
@@ -86,7 +98,11 @@ void AGroupAIPlayerController::CreatePlayerCharacter_Implementation()
 					this->Possess(PlayertInstance);
 				}
 			}
+
 		}
+
+
+		
 		
 	
 	/*	if (GM)
@@ -124,6 +140,35 @@ void AGroupAIPlayerController::CreatePlayerCharacter_Implementation()
 
 	}
 
-	//UGameplayStatics::GetGameMode(UObject*WorldContextObject);
+
+
+}
+
+void AGroupAIPlayerController::InitializeHUD()
+{
+	//只给本地控制器生成HUD，不需要同步
+
+	if (IsLocalController())
+	{
+		//初始化HUD
+		FActorSpawnParameters SpawnInfo;
+		SpawnInfo.Owner = this;
+		SpawnInfo.Instigator = GetInstigator();
+		SpawnInfo.ObjectFlags |= RF_Transient;	// We never want to save HUDs into a map
+		if (PlayerHUD)
+			MyHUD = GetWorld()->SpawnActor<AObserverPlayerHUD>(PlayerHUD, SpawnInfo);
+
+		if (this->GetHUD())
+		{
+			GetHUD()->bShowHUD = false;
+			//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("have HUD"));
+		}
+		else
+		{
+			
+			//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("NO HUD"));
+		}
+	}
+
 
 }

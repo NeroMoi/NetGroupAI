@@ -6,7 +6,7 @@
 #include "GameFramework/Character.h"
 #include "NetGroupAICharacter.generated.h"
 
-UCLASS(config=Game)
+UCLASS(config=Game,Blueprintable,BlueprintType)
 class ANetGroupAICharacter : public ACharacter
 {
 	GENERATED_BODY()

@@ -36,12 +36,17 @@ void AObserverPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	//表示绕着X轴旋转180度，绕y轴旋转0度，Z轴旋转0度
+	FQuat newRotation(FRotator(180, 0, 0));
+	AddActorLocalRotation(newRotation);
 }
 
 // Called every frame
 void AObserverPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	AddActorLocalRotation(ActorRotationRate);
 
 }
 

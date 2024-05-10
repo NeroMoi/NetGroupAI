@@ -27,6 +27,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Test ObjectInstance")
 		float value;
 
+	UPROPERTY(BlueprintReadWrite,EditAnywhere,CateGory = "RotationRate")
+	 FQuat ActorRotationRate = (FQuat(FRotator(0, 1, 0)));
+
 
 protected:
 	// Called when the game starts or when spawned

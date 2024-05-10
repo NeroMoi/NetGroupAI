@@ -15,7 +15,7 @@
 #include "TestInstanceObject.h"
 #include "PlayerCharacter.generated.h"
 
-UCLASS()
+UCLASS(Blueprintable, BlueprintType)
 class NETGROUPAI_API APlayerCharacter : public APawn
 {
 	GENERATED_BODY()
@@ -41,8 +41,8 @@ public:
 	//用来测试实例化Instance标签的属性在蓝图中的引用关系(是原生，还是蓝图)
 	//没有Instance标签，则蓝图不会实例化对象，蓝图的类默认对象引用的也是原生c++ 创建的类默认对象
 	//带有这个标签，则该属性实例化并和蓝图组成prefab
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Instanced,Category="Test")
-		UTestInstanceObject*TestInstanceObj;
+	//UPROPERTY(EditAnywhere,BlueprintReadWrite,Instanced,Category="Test")
+	//	UTestInstanceObject*TestInstanceObj;
 
 
 	

@@ -8,12 +8,13 @@
 #include "PlayerCharacter.h"
 #include "NetGroupAICharacter.h"
 #include "ObserverPlayer.h"
+#include "ObserverPlayerHUD.h"
 #include "GroupAIPlayerController.generated.h"
 
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable,BlueprintType)
 class NETGROUPAI_API AGroupAIPlayerController : public APlayerController
 {
 	GENERATED_BODY()
@@ -34,6 +35,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = Initialize)
 		TSubclassOf<APlayerCharacter> BasePlayerType;
 
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = Initialize)
+		TSubclassOf<AHUD> PlayerHUD;
+
+	void InitializeHUD();
 
 
 
