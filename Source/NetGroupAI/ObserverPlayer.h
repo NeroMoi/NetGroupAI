@@ -24,6 +24,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 		UStaticMeshComponent* SM_Shape;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		FString SelfName;
+
+
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Test ObjectInstance")
 		float value;
 

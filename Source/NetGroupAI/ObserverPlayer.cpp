@@ -35,8 +35,10 @@ AObserverPlayer::AObserverPlayer()
 void AObserverPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	SelfName = this->GetFName().ToString();
 	//表示绕着X轴旋转180度，绕y轴旋转0度，Z轴旋转0度
+	//基于四元数
 	FQuat newRotation(FRotator(180, 0, 0));
 	AddActorLocalRotation(newRotation);
 }
