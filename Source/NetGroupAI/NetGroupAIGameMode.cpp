@@ -24,12 +24,15 @@ void ANetGroupAIGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
+	
 	UWorld* World = GetWorld();
 	if (World)
 	{
 
-		
+		ChangeMenuWidget(StartingWidgetClass);
+
 		playerStart = World->SpawnActor<APlayerStartLocation>(FVector(0,0,0),FRotator::ZeroRotator);
+
 
 		//playerStart->playerLocation1 = FVector(20.0f, 0.f, 20.f);
 	
@@ -37,4 +40,23 @@ void ANetGroupAIGameMode::BeginPlay()
 
 	}
 
+}
+
+void ANetGroupAIGameMode::ChangeMenuWidget(TSubclassOf<UUserWidget> NewWidgetClass)
+{
+
+	if (CurrentWidget != nullptr)
+	{
+		CurrentWidget->RemoveFromViewport();
+		CurrentWidget = nullptr;
+	}
+
+	if (NewWidgetClass != nullptr)
+	{
+		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), NewWidgetClass);
+		if (CurrentWidget != nullptr)
+		{
+			CurrentWidget->AddToViewport();
+		}
+	}
 }

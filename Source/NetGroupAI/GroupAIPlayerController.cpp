@@ -9,6 +9,8 @@
 void AGroupAIPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+
+	SetInputMode(FInputModeGameAndUI());
 	//本地生成HUD
 	InitializeHUD();
 	//服务器生成角色
@@ -39,8 +41,8 @@ void AGroupAIPlayerController::CreatePlayerCharacter_Implementation()
 			{
 				
 			//	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("使用蓝图"));
-				FString BaseName;
-				BasePlayerType->GetName(BaseName);
+			//	FString BaseName;
+			//	BasePlayerType->GetName(BaseName);
 			//	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, BaseName);
 				//服务器上的客户端对应的每一个控制器对应生成一个玩家角色
 				if (!this->IsLocalController())
@@ -63,9 +65,22 @@ void AGroupAIPlayerController::CreatePlayerCharacter_Implementation()
 				}
 				else//服务器玩家角色
 				{
+					APlayerCharacter* ServerPlayer = Cast<APlayerCharacter>(GetPawn());
+					if(ServerPlayer)
+					ServerPlayer->SetActorLocation(FVector(80.0f, 80.0f, 80.0f));
+
+					//销毁gameMode默认生成
+				/*	if (GetPawn())
+					{
+						GetPawn()->Destroy();
+					}
+
 					APlayerCharacter* PlayertInstance = GetWorld()->SpawnActor<APlayerCharacter>(BasePlayerType,FVector(80, 80, 80), FRotator::ZeroRotator);
-					PlayertInstance->SetOwner(this);
-					this->Possess(PlayertInstance);
+					if (PlayertInstance)
+					{
+						PlayertInstance->SetOwner(this);
+						this->Possess(PlayertInstance);
+					}*/
 				}
 			}
 			else//原生c++代码
@@ -93,9 +108,19 @@ void AGroupAIPlayerController::CreatePlayerCharacter_Implementation()
 				}
 				else
 				{
+
+					APlayerCharacter* ServerPlayer = Cast<APlayerCharacter>(GetPawn());
+					if (ServerPlayer)
+						ServerPlayer->SetActorLocation(FVector(80.0f, 80.0f, 80.0f));
+
+					/*if (GetPawn())
+					{
+						GetPawn()->Destroy();
+					}
+
 					APlayerCharacter* PlayertInstance = GetWorld()->SpawnActor<APlayerCharacter>(FVector(80, 80, 80), FRotator::ZeroRotator);
 					PlayertInstance->SetOwner(this);
-					this->Possess(PlayertInstance);
+					this->Possess(PlayertInstance);*/
 				}
 			}
 

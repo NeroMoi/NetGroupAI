@@ -51,8 +51,8 @@ void AFadingLight::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, cla
 		//关灯效果只对客户端自己起效果
 		//这里监听服务器的拥有的角色他的remoteRole 是ROLE_AutonomousProxy，而不是专用服务器的ROLE_SimulatedProxy
 		//因此如果使用监听服务器，应该使用IScontroller判断
-		//player->IsLocallyControlled()||
-		if (player->GetLocalRole() == ROLE_AutonomousProxy)//&&player->GetRemoteRole()==ROLE_SimulatedProxy)
+		//player->GetLocalRole() == ROLE_AutonomousProxy
+		if (player->IsLocallyControlled())//&&player->GetRemoteRole()==ROLE_SimulatedProxy)
 		{
 			
 			//打印枚举值的名称
@@ -73,6 +73,7 @@ void AFadingLight::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, cla
 					if (tempActor)
 					{
 						
+						GetWorld()->GetTimerManager().ClearTimer(UserTimerHandle);
 						tempActor->SetEnabled(false);
 						
 
@@ -116,6 +117,10 @@ void AFadingLight::OnOverlapEnd(class UPrimitiveComponent* OverlappedComponent, 
 					if (tempActor)
 					{
 						directionLight = tempActor;
+
+						//定时器这里存在一个逻辑错误
+						//1.overlap结束事件，一定时间后才会打开directionalLight
+						//2. overlaoBegin时间，不会检测定时器的事件，导致可能关了又开
 						world->GetTimerManager().SetTimer(UserTimerHandle, this,&AFadingLight::TurnOnDirectionalLight, 10.0f, false);
 						
 

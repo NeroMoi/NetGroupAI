@@ -13,14 +13,24 @@
 #include "Net/UnrealNetwork.h"
 #include "Templates/SharedPointer.h"
 #include "TestInstanceObject.h"
+#include "Blueprint/UserWidget.h"
 #include "PlayerCharacter.generated.h"
+
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FNotify_HealthUpdate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FNotify_EnergyUpdate);
 
 UCLASS(Blueprintable, BlueprintType)
 class NETGROUPAI_API APlayerCharacter : public APawn
 {
 	GENERATED_BODY()
 
+		
+
+
 public:
+
+	
 	// Sets default values for this pawn's properties
 	APlayerCharacter();
 
@@ -54,6 +64,7 @@ public:
 	bool bZoomingIn;
 
 	//使用M显示鼠标
+	UPROPERTY(BlueprintReadWrite)
 	bool bHideMouse;
 
 	//使用鼠标左键传送
@@ -68,6 +79,29 @@ public:
 	UPROPERTY(Replicated)
 		FVector PlayerLocation;
 
+	/** 用户的控件类*/
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UMG Game")
+		TSubclassOf<UUserWidget> StartingWidgetClass;
+
+	/** 用作用户的控件实例。*/
+	UPROPERTY(BlueprintReadWrite)
+		UUserWidget* CurrentWidget;
+
+
+	//目前不使用rep_notify 来通知属性(单机)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly,meta=(ClampMin="0",ClampMax="100"))
+		int UserHealth;
+
+	//暴露给蓝图使用
+	UPROPERTY(BlueprintAssignable,BlueprintReadWrite)
+		FNotify_HealthUpdate UpdateHealth;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly,meta= (ClampMin = "0", ClampMax = "100"))
+		int UserEnergy;
+
+	//暴露给蓝图使用
+	UPROPERTY(BlueprintAssignable, BlueprintReadWrite)
+		FNotify_EnergyUpdate  UpdateEnergy;
 
 protected:
 	// Called when the game starts or when spawned
@@ -112,4 +146,23 @@ public:
 
 
 	void AdjustRotation(float DelteTime);
+public:
+
+	UFUNCTION(BlueprintCallable)
+		UUserWidget* GetHUD();
+		
+
+	/** 移除当前菜单控件，并在指定类（如有）中新建控件。*/
+	UFUNCTION(BlueprintCallable, Category = "UMG Game")
+		void ChangeMenuWidget(TSubclassOf<UUserWidget> NewWidgetClass);
+
+	UFUNCTION(BlueprintCallable)
+		void BroadcastCurrentHealth();
+
+	UFUNCTION(BlueprintCallable)
+		void BroadcastCurrentEnergy();
+
+
+
+
 };

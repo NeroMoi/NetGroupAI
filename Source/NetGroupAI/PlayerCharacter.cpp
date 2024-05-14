@@ -60,13 +60,14 @@ APlayerCharacter::APlayerCharacter()
 	playerMovement->UpdatedComponent = RootComponent;
 	playerMovement->SetIsReplicated(true);
 
-	//默认隐藏鼠标
-	bHideMouse = true;
+	//默认未隐藏鼠标
+	bHideMouse = false;
 
 	//指向的是原生类默认对象
 	/*TestInstanceObj = CreateDefaultSubobject<UTestInstanceObject>(TEXT("Test object"));
 	TestInstanceObj->testValue = 55.0f; 
 	TestInstanceObj->Myowner = this;*/
+
 
 }
 
@@ -74,6 +75,8 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+
 	
 }
 
@@ -88,6 +91,9 @@ void APlayerCharacter::Tick(float DeltaTime)
 		//根据帧率更新平滑旋转
 		AdjustRotation(DeltaTime);
 	}
+
+	
+	
 }
 
 // Called to bind functionality to input
@@ -203,8 +209,12 @@ void APlayerCharacter::Up(float AxisValue)
 void APlayerCharacter::ZoomIn()
 {
 	bZoomingIn = true;
+	UserHealth -= 5;
+	UserEnergy -= 10;
 
-
+	BroadcastCurrentEnergy();
+	BroadcastCurrentHealth();
+	
 }
 
 void APlayerCharacter::ZoomOut()
@@ -217,30 +227,33 @@ void APlayerCharacter::ZoomOut()
 void APlayerCharacter::MapDispalyMouseIn()
 {
 	bHideMouse= !bHideMouse;
+	
 }
 
 void APlayerCharacter::MapDispalyMouseOut()
 {
-	if (bHideMouse == false)
+	if (bHideMouse == false)//显示鼠标->则不控制玩家转向
 	{
 		auto pc = Cast<APlayerController>(GetController());
 		if (pc)
 		{
-			//显示鼠标
+			
+			if(!pc->bShowMouseCursor)
 			pc->bShowMouseCursor = true;
-			//设置鼠标不控制转向
+
+			//设置鼠标不控制玩家旋转
 			pc->SetIgnoreLookInput(true);
 		}
 	}
-	else
+	else//隐藏鼠标
 	{
 		auto pc = Cast<APlayerController>(GetController());
 		if (pc)
 		{
 			//显示鼠标
 			pc->bShowMouseCursor = false;
-			//设置鼠标不控制转向
-			pc->SetIgnoreLookInput(false);
+			//设置鼠标控制玩家旋转
+			pc->ResetIgnoreLookInput();
 		}
 	}
 }
@@ -248,6 +261,7 @@ void APlayerCharacter::MapDispalyMouseOut()
 void APlayerCharacter::TeleportIn()
 {
 	bTeleport = true;
+	
 }
 
 void APlayerCharacter::TeleportOut()
@@ -363,5 +377,44 @@ void APlayerCharacter::AdjustRotation(float DeltaTime)
 	}
 
 
+}
+
+UUserWidget* APlayerCharacter::GetHUD()
+{
+	return CurrentWidget;
+}
+
+void APlayerCharacter::ChangeMenuWidget(TSubclassOf<UUserWidget> NewWidgetClass)
+{
+
+	if (CurrentWidget != nullptr)
+	{
+		CurrentWidget->RemoveFromParent();
+		
+		CurrentWidget = nullptr;
+	}
+
+	if (NewWidgetClass != nullptr)
+	{
+		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), NewWidgetClass);
+
+		//AddToViewport 交给蓝图去做
+		/**if (CurrentWidget != nullptr)
+		{
+			CurrentWidget->AddToViewport();
+		}*/
+	}
+	
+
+}
+
+void APlayerCharacter::BroadcastCurrentHealth()
+{
+	UpdateHealth.Broadcast();
+}
+
+void APlayerCharacter::BroadcastCurrentEnergy()
+{
+	UpdateEnergy.Broadcast();
 }
 
