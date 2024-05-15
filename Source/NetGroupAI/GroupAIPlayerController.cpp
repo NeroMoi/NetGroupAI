@@ -4,6 +4,7 @@
 #include "GroupAIPlayerController.h"
 #include "ObserverPlayer.h"
 #include "ObserverPlayerHUD.h"
+#include "Kismet/GameplayStatics.h"
 #include"Engine/Engine.h"
 
 void AGroupAIPlayerController::BeginPlay()
@@ -59,15 +60,20 @@ void AGroupAIPlayerController::CreatePlayerCharacter_Implementation()
 							GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, temp->GetFName().ToString());
 						*/
 						
+						
 						PlayertInstance->SetOwner(this);
 						this->Possess(PlayertInstance);
+						PlayertInstance->UniqueID = this->GetUniqueID();
 					}
 				}
 				else//服务器玩家角色
 				{
 					APlayerCharacter* ServerPlayer = Cast<APlayerCharacter>(GetPawn());
-					if(ServerPlayer)
-					ServerPlayer->SetActorLocation(FVector(80.0f, 80.0f, 80.0f));
+					if (ServerPlayer)
+					{
+						ServerPlayer->UniqueID = this->GetUniqueID();
+						ServerPlayer->SetActorLocation(FVector(80.0f, 80.0f, 80.0f));
+					}
 
 					//销毁gameMode默认生成
 				/*	if (GetPawn())
@@ -103,7 +109,9 @@ void AGroupAIPlayerController::CreatePlayerCharacter_Implementation()
 						*/
 
 						PlayertInstance->SetOwner(this);
+					
 						this->Possess(PlayertInstance);
+						PlayertInstance->UniqueID = this->GetUniqueID();
 					}
 				}
 				else
@@ -111,7 +119,10 @@ void AGroupAIPlayerController::CreatePlayerCharacter_Implementation()
 
 					APlayerCharacter* ServerPlayer = Cast<APlayerCharacter>(GetPawn());
 					if (ServerPlayer)
+					{
+						ServerPlayer->UniqueID = this->GetUniqueID();
 						ServerPlayer->SetActorLocation(FVector(80.0f, 80.0f, 80.0f));
+					}
 
 					/*if (GetPawn())
 					{

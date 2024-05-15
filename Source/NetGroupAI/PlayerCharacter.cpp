@@ -129,6 +129,7 @@ void APlayerCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME_CONDITION(APlayerCharacter, PlayerLocation, COND_OwnerOnly);
+	DOREPLIFETIME_CONDITION(APlayerCharacter, UniqueID, COND_OwnerOnly);
 }
 
 void APlayerCharacter::MoveForward(float AxisValue)
@@ -316,8 +317,8 @@ void APlayerCharacter::TeleportOut()
 						{
 							
 
-							Teleport(MouseWorldLocation + MouseWorldDirection * 1000);
-							SetActorLocation(MouseWorldLocation + MouseWorldDirection * 1000);
+							Teleport(MouseWorldLocation + MouseWorldDirection * 100);
+							SetActorLocation(MouseWorldLocation + MouseWorldDirection * 100);
 						}
 
 
@@ -416,5 +417,10 @@ void APlayerCharacter::BroadcastCurrentHealth()
 void APlayerCharacter::BroadcastCurrentEnergy()
 {
 	UpdateEnergy.Broadcast();
+}
+
+void APlayerCharacter::InitControllerID_Implementation()
+{
+	//do nothing
 }
 

@@ -103,6 +103,13 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintReadWrite)
 		FNotify_EnergyUpdate  UpdateEnergy;
 
+	UPROPERTY(ReplicatedUsing = InitControllerID,BlueprintReadWrite,VisibleAnywhere)
+		int UniqueID;
+
+
+
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -163,6 +170,10 @@ public:
 		void BroadcastCurrentEnergy();
 
 
+	UFUNCTION(Client,Reliable)
+		void InitControllerID();
+
+	void InitControllerID_Implementation();
 
 
 };
