@@ -254,7 +254,8 @@ void APlayerCharacter::MapDispalyMouseOut()
 			//显示鼠标
 			pc->bShowMouseCursor = false;
 			//设置鼠标控制玩家旋转
-			pc->ResetIgnoreLookInput();
+			pc->SetIgnoreLookInput(false);
+			//pc->ResetIgnoreLookInput();
 		}
 	}
 }
@@ -317,11 +318,11 @@ void APlayerCharacter::TeleportOut()
 						{
 							
 
-							Teleport(MouseWorldLocation + MouseWorldDirection * 100);
-							SetActorLocation(MouseWorldLocation + MouseWorldDirection * 100);
+							Teleport(GetActorLocation() + MouseWorldDirection * 100);
+							SetActorLocation(GetActorLocation() + MouseWorldDirection * 100);
 						}
 
-
+					
 						
 					}
 				}

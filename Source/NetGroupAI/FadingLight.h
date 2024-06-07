@@ -11,6 +11,18 @@
 #include "Engine/DirectionalLight.h"
 #include "FadingLight.generated.h"
 
+
+
+
+
+UENUM(BlueprintType)//测试输出enum成员
+enum class FadingLightType :uint8
+{
+	DirectionLight,
+	AmbientLight
+};
+
+
 UCLASS()
 class NETGROUPAI_API AFadingLight : public AActor
 {
@@ -43,7 +55,7 @@ public:
 	//控制点光源颜色的轨道
 	FOnTimelineLinearColor UpdateColorTrack;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite)
 		float BrightnessMultiplier;
 
 	FTimerHandle UserTimerHandle;
@@ -70,6 +82,19 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void OnOverlapEnd(class UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	//通过反射调用函数
+	//方法原型
+	UFUNCTION(BlueprintCallable)
+		int32 printInfo(float param);
+	//通过反射调用函数的包裹函数
+	UFUNCTION(BlueprintCallable)
+		int32 InvokeFunction(UObject* obj, FName functionName, float Param);
+
+
+
+	//反射系统实战
+	void TestReflection();
 
 
 protected:

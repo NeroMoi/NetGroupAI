@@ -12,7 +12,7 @@ void AGroupAIPlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	SetInputMode(FInputModeGameAndUI());
-	//本地生成HUD
+	//本地生成HUD->中心点绘制准心
 	InitializeHUD();
 	//服务器生成角色
 	CreatePlayerCharacter_Implementation();
@@ -68,6 +68,18 @@ void AGroupAIPlayerController::CreatePlayerCharacter_Implementation()
 				}
 				else//服务器玩家角色
 				{
+
+					/*APlayerCharacter* PlayertInstance = GetWorld()->SpawnActor<APlayerCharacter>(BasePlayerType, GM->playerStart->GenerateStartLocation(), FRotator::ZeroRotator);
+
+					if (PlayertInstance)
+					{
+						
+						PlayertInstance->SetOwner(this);
+						this->Possess(PlayertInstance);
+						PlayertInstance->UniqueID = this->GetUniqueID();
+						PlayertInstance->SetActorLocation(FVector(80.0f, 80.0f, 80.0f));
+					}*/
+
 					APlayerCharacter* ServerPlayer = Cast<APlayerCharacter>(GetPawn());
 					if (ServerPlayer)
 					{
@@ -116,6 +128,8 @@ void AGroupAIPlayerController::CreatePlayerCharacter_Implementation()
 				}
 				else
 				{
+
+					
 
 					APlayerCharacter* ServerPlayer = Cast<APlayerCharacter>(GetPawn());
 					if (ServerPlayer)
