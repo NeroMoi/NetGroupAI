@@ -124,4 +124,15 @@ public:
 
 	}
 
+	//实践三：用于实现作为模块里面的UK2Node_CallFunction 节点任意调用的UFUNCTION
+
+	//打印Hello World
+	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true"))
+		static void SayHello_Internal();
+		
+	//把输入的N个字符串连接起来，然后打印输出（给蓝图节点添加/删除引脚的测试）
+	UFUNCTION(BlueprintCallable,meta=(BlueprintInternalUseOnly = "true"))
+		static void SaySomething_Internal(const TArray<FString>& InWords);
+
+
 };

@@ -12,7 +12,7 @@ int UCalcSumBlueprintFunctionLibrary::Sum(int a, int b)
 
 void UCalcSumBlueprintFunctionLibrary::Generic_ShowStructFields(const void* StructAddr, const FStructProperty* StructProperty)
 {
-
+	
 	UScriptStruct* Struct = StructProperty->Struct;
 
 	for (TFieldIterator<FProperty>iter(Struct); iter; ++iter)
@@ -99,5 +99,30 @@ float UCalcSumBlueprintFunctionLibrary::GenericArray_NumericPropertyAverage(cons
 	// TODO: else if(enum类型)
 
 	return Sum / Count;
+}
+
+void UCalcSumBlueprintFunctionLibrary::SayHello_Internal()
+{
+	if (GEngine)
+	{
+		const int32 AlwaysAddKey = -1;
+
+		GEngine->AddOnScreenDebugMessage(AlwaysAddKey, 5.0f, FColor::Purple, TEXT("Hello world"));
+	}
+
+}
+
+void UCalcSumBlueprintFunctionLibrary::SaySomething_Internal(const TArray<FString>& InWords)
+{
+	FString OutString(TEXT("SaySomething Called:"));
+	for (const auto& Word : InWords)
+			OutString += Word;
+
+	if (GEngine)
+	{
+		const int32 AlwaysAddKey = -1;
+
+		GEngine->AddOnScreenDebugMessage(AlwaysAddKey, 5.0f, FColor::Purple, OutString);
+	}
 }
 

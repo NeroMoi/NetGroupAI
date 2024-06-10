@@ -12,6 +12,14 @@
 				"Engine",
 				"CoreUObject"
 			]
+		},
+		{
+			"Name": "NetGroupAIEditorTest",
+			"Type": "Editor",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"BlueprintGraph"
+			]
 		}
 	],
 	"Plugins": [

@@ -9,6 +9,8 @@ public class NetGroupAIEditorTarget : TargetRules
 	{
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
-		ExtraModuleNames.Add("NetGroupAI");
+		ExtraModuleNames.AddRange(new string[] { "NetGroupAI", 
+												 "NetGroupAIEditorTest" });
+	
 	}
 }
